@@ -5,14 +5,18 @@ Created on 27 sie 2013
 '''
 
 from blocks import SingleBlock
-from game import BLACK, BLUE, WHITE, margin, size
+from consts import BLACK, BLUE, WHITE, margin, size
 import pygame
 
 class Board():
     def __init__(self, surface):
         self.surface = surface
-        self.board = {i : [SingleBlock(self.surface, BLACK) for j in range(10)] for i in range(18)}
-        self.board1 = {i : [0 for j in range(10)] for i in range(18)}
+        self.board = {i : [SingleBlock(self.surface, BLACK) for j in range(18)] for i in range(10)}
+        self.board1 = {i: [0 for j in range(19)] for i in range(-1, 11)}
+        self.board1[-1] = [1 for j in range(19)]
+        self.board1[11] = [1 for j in range(19)]
+        for i in range(-1, 11):
+            self.board1[i][18] = 1
         self.draw()
 
     def draw(self):
@@ -26,10 +30,10 @@ class Board():
         pygame.draw.line(self.surface, WHITE, [margin / 2, 0], [margin / 2, 18 * size], margin)
         pygame.draw.line(self.surface, WHITE, [10 * size + margin, 0], [10 * size + margin, 18 * size], margin)
         
-        for i in range(18):
-            for j in range(10):
+        for i in range(10):
+            for j in range(18):
                 if self.board1[i][j]:
-                    self.board[i][j].draw(j, i)
+                    self.board[i][j].draw(i, j)
         pygame.display.flip()        
             
     def check(self, rows=set(range(18))):
