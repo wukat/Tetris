@@ -5,8 +5,8 @@ Created on 27 sie 2013
 '''
 NROWS = 20
 NCOLS = 12 
-size = 50
-screen_size = [NCOLS * size + 100, NROWS * size + 3]
+size = 20
+screen_size = [NCOLS * size + 125, NROWS * size + 3]
 margin = 5
 
 

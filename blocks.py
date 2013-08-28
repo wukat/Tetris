@@ -5,7 +5,7 @@ Created on 27 sie 2013
 '''
 
 from consts import size, margin, GREEN, WHITE, NCOLS, NROWS, FAIR_GREEN, GREY, \
-    roundcolor
+    roundcolor, RED, PURPLE, YELLOW
 import pygame
 
 class SingleBlock():
@@ -87,4 +87,41 @@ class LongBlock(Block):
                 self.state = 1
             elif self.state == 1:
                 self.fields = [[self.fields[1][0], self.fields[1][1] - 1], [self.fields[1][0], self.fields[1][1]], [self.fields[1][0], self.fields[1][1] + 1], [self.fields[1][0], self.fields[1][1] + 2]]
-                self.state = 0       
+                self.state = 0    
+                
+class SquareBlock(Block):
+    def __init__(self, board, board_show):
+        Block.__init__(self, board, board_show)
+        self.fields = [[NCOLS/2 + 1, -1], [NCOLS/2, -1], [NCOLS/2 + 1, 0], [NCOLS/2, 0]]
+        self.color = RED
+        
+    def cantRotate(self):
+        return True
+            
+    def rotate(self):
+        pass       
+    
+class LBlock(Block):
+    def __init__(self, board, board_show):
+        Block.__init__(self, board, board_show)
+        self.fields = [[NCOLS/2, -2], [NCOLS/2, -1], [NCOLS/2, 0], [NCOLS/2 + 1, 0]]
+        self.color = YELLOW
+        
+    def cantRotate(self):
+        if self.state == 0:
+            pass
+            
+    def rotate(self):
+        pass    
+    
+class revLBlock(Block):
+    def __init__(self, board, board_show):
+        Block.__init__(self, board, board_show)
+        self.fields = [[NCOLS/2 + 1, -2], [NCOLS/2 + 1, -1], [NCOLS/2 + 1, 0], [NCOLS/2, 0]]
+        self.color = PURPLE
+        
+    def cantRotate(self):
+        pass
+            
+    def rotate(self):
+        pass           

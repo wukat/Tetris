@@ -1,6 +1,7 @@
 from blocks import LongBlock
 from board import Board
-from consts import screen_size
+from button import Button
+from consts import screen_size, NCOLS, size, NROWS
 from pygame.locals import *
 from start_screen import StartScreen
 import os
@@ -17,6 +18,8 @@ class Game():
         if self.gamestate:
             self.board = Board(self.surface)
             self.time = 1000
+            self.quit = Button(self.surface, "QUIT", screen_size[0] - 60, screen_size[1] - 30, 25)
+            self.quit.draw()
             self.loop()
         else:
             self.game_exit()
@@ -28,12 +31,23 @@ class Game():
         self.acttime = 0
         while self.gamestate:
             for event in pygame.event.get():
-                if self.gamestate == 1 and (event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE)):
+                if self.gamestate == 1 and (event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE)) or (event.type == MOUSEBUTTONDOWN and self.quit.checkIfHover(pygame.mouse.get_pos())):
                     self.gamestate = 0
                 elif (event.type == KEYDOWN and event.key == K_SPACE):
                     self.gamestate *= -1
                 elif (event.type == KEYDOWN and (event.key == K_w or event.key == K_UP)):
                     self.board.block.rotate()
+                elif event.type == MOUSEMOTION:
+                    x, y = pygame.mouse.get_pos()
+                    if self.quit.checkIfHover((x, y)):
+                        self.quit.hover = 1
+                    else:
+                        self.quit.hover = 0
+                    self.quit.drawBorder()
+                    if x >= 0 and x <= NCOLS * size + 5 and y >= 0 and y <= NROWS * size + 5:
+                        pygame.mouse.set_visible(False)
+                    else:
+                        pygame.mouse.set_visible(True)
                 
             if self.gamestate == 1:
                 keys = pygame.key.get_pressed()    

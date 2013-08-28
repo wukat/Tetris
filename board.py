@@ -4,7 +4,7 @@ Created on 27 sie 2013
 @author: wukat
 '''
 
-from blocks import SingleBlock, LongBlock
+from blocks import SingleBlock, LongBlock, SquareBlock
 from consts import BLACK, BLUE, WHITE, margin, size, NCOLS, NROWS, screen_size, \
     backgroundcolor
 import pygame
@@ -24,12 +24,12 @@ class Board():
         self.board[NCOLS] = [1 for j in range(NROWS + 1)]
         for i in range(-1, NCOLS + 1):
             self.board[i][NROWS] = 1
-        self.block = LongBlock(self.board, self.board_show)
+        self.block = SquareBlock(self.board, self.board_show)
         self.draw()
         
 
     def draw(self):
-        self.surface.fill(backgroundcolor, [0, 0, screen_size[0] - 90, screen_size[1]])
+        self.surface.fill(backgroundcolor, [0, 0, screen_size[0] - 110, screen_size[1]])
         for i in range(NROWS + 1):
             pygame.draw.line(self.surface, WHITE, [margin / 2 + 1, i * size], [NCOLS * size + margin / 2 + 1, i * size], 1)
         for i in range(NCOLS + 1):
@@ -93,7 +93,7 @@ class Board():
         return board
     
     def texts(self):
-        font = pygame.font.Font(None,15)
+        font = pygame.font.Font(None,20)
         scoretext = font.render("Punkty: " + str(self.point), 1, (255,255,255), backgroundcolor)
         leveltext = font.render("Poziom: " + str(self.level), 1, (255,255,255), backgroundcolor)
         gametext = font.render("Tetris", 1, (255,255,255), backgroundcolor)
