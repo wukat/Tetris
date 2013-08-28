@@ -4,57 +4,71 @@ Created on 27 sie 2013
 @author: wukat
 '''
 
-from blocks import SingleBlock
-from consts import BLACK, BLUE, WHITE, margin, size
+from blocks import SingleBlock, LongBlock
+from consts import BLACK, BLUE, WHITE, margin, size, NCOLS, NROWS
 import pygame
 
 class Board():
     def __init__(self, surface):
         self.surface = surface
-        self.board = {i : [SingleBlock(self.surface, BLACK) for j in range(18)] for i in range(10)}
-        self.board1 = {i: [0 for j in range(19)] for i in range(-1, 11)}
-        self.board1[-1] = [1 for j in range(19)]
-        self.board1[11] = [1 for j in range(19)]
-        for i in range(-1, 11):
-            self.board1[i][18] = 1
+        self.board_show = {i : [SingleBlock(self.surface, BLACK) for j in range(NROWS)] for i in range(NCOLS)}
+        self.board = {i: [0 for j in range(NROWS + 1)] for i in range(-1, NCOLS + 1)}
+        self.board[-1] = [1 for j in range(NROWS + 1)]
+        self.board[NCOLS] = [1 for j in range(NROWS + 1)]
+        for i in range(-1, NCOLS + 1):
+            self.board[i][NROWS] = 1
+        self.block = LongBlock(0, self.board, self.board_show)
         self.draw()
+        
 
     def draw(self):
         self.surface.fill(BLUE)
-        for i in range(19):
-            pygame.draw.line(self.surface, WHITE, [margin / 2 + 1, i * size], [10 * size + margin / 2 + 1, i * size], 1)
-        for i in range(11):
-            pygame.draw.line(self.surface, WHITE, [i * size + margin / 2 + 2, 0], [i * size + margin / 2 + 2, 18 * size], 1)
+        for i in range(NROWS + 1):
+            pygame.draw.line(self.surface, WHITE, [margin / 2 + 1, i * size], [NCOLS * size + margin / 2 + 1, i * size], 1)
+        for i in range(NCOLS + 1):
+            pygame.draw.line(self.surface, WHITE, [i * size + margin / 2 + 2, 0], [i * size + margin / 2 + 2, NROWS * size], 1)
             
-        pygame.draw.line(self.surface, WHITE, [0, 18 * size + margin / 2], [10 * size + margin * 3 / 2, 18 * size + margin / 2], margin)
-        pygame.draw.line(self.surface, WHITE, [margin / 2, 0], [margin / 2, 18 * size], margin)
-        pygame.draw.line(self.surface, WHITE, [10 * size + margin, 0], [10 * size + margin, 18 * size], margin)
+        pygame.draw.line(self.surface, WHITE, [0, NROWS * size + margin / 2], [NCOLS * size + margin * 3 / 2, NROWS * size + margin / 2], margin)
+        pygame.draw.line(self.surface, WHITE, [margin / 2, 0], [margin / 2, NROWS * size], margin)
+        pygame.draw.line(self.surface, WHITE, [NCOLS * size + margin, 0], [NCOLS * size + margin, NROWS * size], margin)
         
-        for i in range(10):
-            for j in range(18):
-                if self.board1[i][j]:
-                    self.board[i][j].draw(i, j)
-        pygame.display.flip()        
+        for i in range(NCOLS):
+            for j in range(NROWS):
+                if self.board[i][j]:
+                    self.board_show[i][j].draw(i, j)
+                    
+        self.board_show = self.block.draw(self.block.color)
+        pygame.display.flip()
             
-    def check(self, rows=set(range(18))):
+    def check(self, rows=set(range(NROWS))):
         temp = set()
         for i in rows:
-            if sum(self.board1[i]) == 10:
+            if sum(self.board[j][i] for j in range(NCOLS)) == NCOLS:
                 temp.add(i)
         return temp
      
     def actualize(self, rows=set()):
         for i in rows:
-            pygame.draw.rect(self.surface, WHITE, [margin - 1, size * i, size * 10, size], 0)
-            self.board1[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            pygame.draw.rect(self.surface, WHITE, [margin - 1, size * i, size * NCOLS, size], 0)
+            for j in range(NCOLS):
+                self.board[j][i] = 0
         pygame.display.flip()
-        for i in reversed(range(18)):
-            if sum(self.board1[i]) == 0:
+        for i in reversed(range(NROWS)):
+            if sum(self.board[k][i] for k in range(NCOLS)) == 0:
                 for j in reversed(range(0, i)):
-                    if sum(self.board1[j]) != 0:
-                        self.board1[i], self.board1[j] = self.board1[j], self.board1[i]
-                        self.board[i], self.board[j] = self.board[j], self.board[i]
+                    if sum(self.board[k][j] for k in range(NCOLS)) != 0:
+                        self.board = self.swapRows(i, j, self.board)
+                        self.board_show = self.swapRows(i, j, self.board_show)
                         break
         if rows:
-            pygame.time.Clock().tick(1)
-        self.draw()
+            pygame.time.wait(100)
+        if self.block.checkIfLays():
+            for i in self.block.fields:
+                self.board[i[0]][i[1]] = 1
+            self.block = LongBlock(0, self.board, self.board_show)
+            
+    def swapRows(self, i, j, board):
+        for k in range(NCOLS):
+            board[k][i], board[k][j] = board[k][j], board[k][i]
+        return board
+        

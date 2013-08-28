@@ -4,7 +4,7 @@ Created on 27 sie 2013
 @author: wukat
 '''
 
-from consts import size, margin, GREEN, WHITE
+from consts import size, margin, GREEN, WHITE, NCOLS, NROWS
 import pygame
 
 class SingleBlock():
@@ -36,27 +36,17 @@ class Block():
         if not self.checkIfLays():
             for i in self.fields:
                 i[1] += 1
-        else:
-            for i in self.fields:
-                self.board[i[0]][i[1]] = 1
     
-    def moveRight(self):
+    def move(self, x, y):
         flag = False
         for i in self.fields:
-            if self.board[i[0] + 1][i[1]]:
-                flag = True
+            if i[0] + x >= -1 and i[0] + x <= NCOLS + 1 and i[1] + y >= 0:
+                if self.board[i[0] + x][i[1] + y]:
+                    flag = True
         if not flag:
             for i in self.fields:
-                i[0] += 1
-                
-    def moveLeft(self):
-        flag = False
-        for i in self.fields:
-            if self.board[i[0] - 1][i[1]]:
-                flag = True
-        if not flag:
-            for i in self.fields:
-                i[0] -= 1
+                i[0] += x
+                i[1] += y
                 
     def canRotate(self):
         pass
@@ -64,8 +54,13 @@ class Block():
     def rotate(self):
         pass
        
-    def draw(self):
-        pass
+    def draw(self, color):
+        for i in self.fields:
+            if i[0] >= 0 and i[1] >= 0:
+                self.board_show[i[0]][i[1]].color = self.color
+                self.board_show[i[0]][i[1]].draw(i[0], i[1])
+        pygame.display.flip()
+        return self.board_show
     
 class LongBlock(Block):
     def __init__(self, time, board, board_show):
@@ -73,25 +68,23 @@ class LongBlock(Block):
         self.fields = [[5, -3], [5, -2], [5, -1], [5, 0]]
         self.color = WHITE
         
-    def canRotate(self):
+    def cantRotate(self):
         if self.state == 0:
-            return self.board[self.fields[1][0] - 1][self.fields[1][1]] + self.board[self.fields[1][0] + 1][self.fields[1][1]] +  self.board[self.fields[1][0] + 2][self.fields[1][1]]
+            if self.fields[1][0] >= 0 and self.fields[1][0] <= NCOLS - 2 and self.fields[1][1] >= 0:
+                return self.board[self.fields[1][0] - 1][self.fields[1][1]] + self.board[self.fields[1][0] + 1][self.fields[1][1]] + self.board[self.fields[1][0] + 2][self.fields[1][1]]
+            else: 
+                return True
         else:
-            return self.board[self.fields[1][0]][self.fields[1][1] - 1] + self.board[self.fields[1][0]][self.fields[1][1] + 1] +  self.board[self.fields[1][0]][self.fields[1][1] + 2]    
-    
+            if self.fields[1][1] >= 0 and self.fields[1][1] <= NROWS - 2:
+                return self.board[self.fields[1][0]][self.fields[1][1] - 1] + self.board[self.fields[1][0]][self.fields[1][1] + 1] + self.board[self.fields[1][0]][self.fields[1][1] + 2]    
+            else:
+                return True
+            
     def rotate(self):
-        if self.canRotate():
+        if not self.cantRotate():
             if self.state == 0:
-                self.fields = [(self.fields[1][0] - 1, self.fields[1][1]), (self.fields[1][0], self.fields[1][1]), (self.fields[1][0] + 1, self.fields[1][1]), (self.fields[1][0] + 2, self.fields[1][1])]
+                self.fields = [[self.fields[1][0] - 1, self.fields[1][1]], [self.fields[1][0], self.fields[1][1]], [self.fields[1][0] + 1, self.fields[1][1]], [self.fields[1][0] + 2, self.fields[1][1]]]
                 self.state = 1
             elif self.state == 1:
-                self.fields = [(self.fields[1][0],self.fields[1][1] - 1), (self.fields[1][0],self.fields[1][1]), (self.fields[1][0],self.fields[1][1] + 1), (self.fields[1][0],self.fields[1][1] + 2)]
-                self.state = 0
-    
-    def draw(self):
-        for i in self.fields:
-            if i[0] >= 0 and i[1] >= 0 and i[1] < 18:
-                self.board_show[i[0]][i[1]].color = self.color
-                self.board_show[i[0]][i[1]].draw(i[0], i[1])
-        pygame.display.flip()
-        
+                self.fields = [[self.fields[1][0], self.fields[1][1] - 1], [self.fields[1][0], self.fields[1][1]], [self.fields[1][0], self.fields[1][1] + 1], [self.fields[1][0], self.fields[1][1] + 2]]
+                self.state = 0       

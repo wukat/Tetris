@@ -3,9 +3,12 @@ Created on 27 sie 2013
 
 @author: wukat
 '''
+NROWS = 20
+NCOLS = 12 
 size = 35
-screen_size = [10 * size + 100, 18 * size + 3]
+screen_size = [NCOLS * size + 100, NROWS * size + 3]
 margin = 5
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
