@@ -29,6 +29,7 @@ class Game():
                  
     def loop(self):
         self.acttime = 0
+        self.hideMouse()
         while self.gamestate:
             for event in pygame.event.get():
                 if self.gamestate == 1 and (event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE)) or (event.type == MOUSEBUTTONDOWN and self.quit.checkIfHover(pygame.mouse.get_pos())):
@@ -38,16 +39,13 @@ class Game():
                 elif (event.type == KEYDOWN and (event.key == K_w or event.key == K_UP)):
                     self.board.block.rotate()
                 elif event.type == MOUSEMOTION:
-                    x, y = pygame.mouse.get_pos()
-                    if self.quit.checkIfHover((x, y)):
+                    if self.quit.checkIfHover(pygame.mouse.get_pos()):
                         self.quit.hover = 1
                     else:
                         self.quit.hover = 0
                     self.quit.drawBorder()
-                    if x >= 0 and x <= NCOLS * size + 5 and y >= 0 and y <= NROWS * size + 5:
-                        pygame.mouse.set_visible(False)
-                    else:
-                        pygame.mouse.set_visible(True)
+                    self.hideMouse()
+                    
                 
             if self.gamestate == 1:
                 keys = pygame.key.get_pressed()    
@@ -68,7 +66,14 @@ class Game():
                 self.gamestate = 0
                  
         self.game_exit()
-                      
+        
+    def hideMouse(self):
+        x, y = pygame.mouse.get_pos()
+        if x >= 0 and x <= NCOLS * size + 5 and y >= 0 and y <= NROWS * size + 5:
+            pygame.mouse.set_visible(False)
+        else:
+            pygame.mouse.set_visible(True)
+                          
 if __name__ == '__main__':
     Game()
 
