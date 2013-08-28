@@ -3,9 +3,9 @@ Created on 27 sie 2013
 
 @author: wukat
 '''
-NROWS = 50
-NCOLS = 52 
-size = 10
+NROWS = 20
+NCOLS = 12 
+size = 50
 screen_size = [NCOLS * size + 100, NROWS * size + 3]
 margin = 5
 
@@ -28,3 +28,4 @@ GREY = (95, 95, 95)
 
 backgroundcolor = FAIR_BLUE
 roundcolor = PINK
+roundbuttoncolor = ORANGE

@@ -13,12 +13,13 @@ class Game():
         pygame.init()
         self.surface = pygame.display.set_mode(screen_size, DOUBLEBUF)
         pygame.display.set_caption('Tetris by wukat')
-        self.startScreen = StartScreen(self.surface)
-        
-        self.gamestate = 1  # 1 - run, 0 - exit, -1 - pause
-        self.board = Board(self.surface)
-        self.time = 1000
-        self.loop()
+        self.gamestate = StartScreen(self.surface).loop()  # 1 - run, 0 - exit, -1 - pause
+        if self.gamestate:
+            self.board = Board(self.surface)
+            self.time = 1000
+            self.loop()
+        else:
+            self.game_exit()
 
     def game_exit(self):
         pygame.quit()
