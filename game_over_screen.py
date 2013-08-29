@@ -20,10 +20,7 @@ class GameOverScreen(StartScreen):
         self.score = Text(self.surface, "Final score: 0", True, 30, WHITE, backgroundcolor, screen_size[0] // 2, screen_size[1] * 4/8)
         
     def show(self, score):
-        self.surface.fill(backgroundcolor)
-        self.starttext.show()
-        self.start.draw()
-        self.quit.draw()
+        StartScreen.show(self)
         self.showScore(score)
         pygame.display.update()
         
