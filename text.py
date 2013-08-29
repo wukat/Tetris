@@ -22,7 +22,6 @@ class Text():
             self.x -= width // 2
             self.y -= height // 2
             
-    
     def setSize(self, size):
         width, height = self.dimensions()
         self.size = size

@@ -107,7 +107,7 @@ class Board():
         self.point = 0
         self.level = 1
         self.count = 0
-        self.time = 1000
+        self.time = 500
         self.board_show = {i : [SingleBlock(self.surface, BLACK, WHITE) for j in range(NROWS)] for i in range(NCOLS)}
         self.board = {i: [0 for j in range(NROWS + 1)] for i in range(-1, NCOLS + 1)}
         self.board[-1] = [1 for j in range(NROWS + 1)]

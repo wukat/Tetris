@@ -14,8 +14,8 @@ class SingleBlock():
         self.color1 = color1
         
     def draw(self, x, y):
-        pygame.draw.rect(self.surface, self.color, [x * size + margin - 1, y * size - 1, size, size], 0)
-        pygame.draw.rect(self.surface, self.color1, [x * size + margin - 1, y * size - 1, size - 1, size], 2)
+        pygame.draw.rect(self.surface, self.color, [x * size + margin, y * size, size, size], 0)
+        pygame.draw.rect(self.surface, self.color1, [x * size + margin - 1, y * size - 1, size, size], 2)
         
 class Block():
     def __init__(self, board, board_show, specif):

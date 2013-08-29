@@ -42,11 +42,11 @@ class Game():
             if self.readEvents() == 1:
                 self.readKeys()
                 
+                self.board.actualize(self.board.check())
+                
                 if -(self.acttime - pygame.time.get_ticks()) > self.board.time:
                     self.board.block.moveDown()
                     self.acttime = pygame.time.get_ticks()
-                    
-                self.board.actualize(self.board.check())
                 self.board.draw()
                 
                 if self.board.isGameOver():
@@ -92,7 +92,7 @@ class Game():
         keys = pygame.key.get_pressed()    
         if keys[K_s] or keys[K_DOWN]:
             self.board.block.moveDown()  
-            pygame.time.wait(100)  
+            pygame.time.wait(100) 
         elif keys[K_d] or keys[K_RIGHT]:
             self.board.block.move(1, 0)
             pygame.time.wait(100)
