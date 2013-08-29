@@ -18,7 +18,7 @@ class Board():
         self.level = 1
         self.count = 0
         self.time = 1000
-        self.board_show = {i : [SingleBlock(self.surface, BLACK) for j in range(NROWS)] for i in range(NCOLS)}
+        self.board_show = {i : [SingleBlock(self.surface, BLACK, WHITE) for j in range(NROWS)] for i in range(NCOLS)}
         self.board = {i: [0 for j in range(NROWS + 1)] for i in range(-1, NCOLS + 1)}
         self.board[-1] = [1 for j in range(NROWS + 1)]
         self.board[NCOLS] = [1 for j in range(NROWS + 1)]
@@ -44,7 +44,7 @@ class Board():
                 if self.board[i][j]:
                     self.board_show[i][j].draw(i, j)
                     
-        self.board_show = self.block.draw(self.block.color)
+        self.board_show = self.block.draw(self.block.color, self.block.color2)
         self.texts()
         pygame.display.update()
             
@@ -94,8 +94,8 @@ class Board():
     
     def texts(self):
         font = pygame.font.Font(None,20)
-        scoretext = font.render("Punkty: " + str(self.point), 1, (255,255,255), backgroundcolor)
-        leveltext = font.render("Poziom: " + str(self.level), 1, (255,255,255), backgroundcolor)
+        scoretext = font.render("Score: " + str(self.point), 1, (255,255,255), backgroundcolor)
+        leveltext = font.render("Level: " + str(self.level), 1, (255,255,255), backgroundcolor)
         gametext = font.render("Tetris", 1, (255,255,255), backgroundcolor)
         self.surface.blit(gametext, (NCOLS * size + 15, 10))
         self.surface.blit(scoretext, (NCOLS * size + 15, 30))
