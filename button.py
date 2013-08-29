@@ -3,7 +3,9 @@ Created on 28 sie 2013
 
 @author: wukat
 '''
-from consts import roundbuttoncolor, backgroundcolor
+
+from consts import roundbuttoncolor, backgroundcolor, WHITE
+from text import Text
 import pygame
 
 class Button():
@@ -11,14 +13,12 @@ class Button():
         self.x = x
         self.y = y
         self.surface = surface
-        self.text = text
-        self.font = pygame.font.Font(None, fontSize)
-        self.width, self.height = self.font.size(text) 
+        self.text = Text(self.surface, text, fontSize, WHITE, backgroundcolor, self.x, self.y) 
+        self.width, self.height = self.text.dimensions()
         self.hover = 0
     
     def draw(self):
-        name = self.font.render(self.text, 1, (255,255,255), backgroundcolor)
-        self.surface.blit(name, (self.x, self.y))     
+        self.text.show()
         self.drawBorder()
         pygame.display.update()
         

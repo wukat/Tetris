@@ -4,9 +4,11 @@ Created on 27 sie 2013
 @author: wukat
 '''
 
-from blocks import SingleBlock, LongBlock, SquareBlock
-from consts import BLACK, BLUE, WHITE, margin, size, NCOLS, NROWS, screen_size, \
-    backgroundcolor
+from Crypto.Random import random
+from blocks import SingleBlock, Block
+from consts import BLACK, WHITE, margin, size, NCOLS, NROWS, screen_size, \
+    backgroundcolor, Blocks
+from text import Text
 import pygame
 
 
@@ -24,10 +26,15 @@ class Board():
         self.board[NCOLS] = [1 for j in range(NROWS + 1)]
         for i in range(-1, NCOLS + 1):
             self.board[i][NROWS] = 1
-        self.block = SquareBlock(self.board, self.board_show)
+        self.block = Block(self.board, self.board_show, random.choice(Blocks))
+        self.block_next = random.choice(Blocks)
+               
+        self.starttext = Text(self.surface, "TETRIS", 20, WHITE, backgroundcolor, NCOLS * size + 15, 10)
+        self.scoretext = Text(self.surface, "Score: " + str(self.point), 20, WHITE, backgroundcolor, NCOLS * size + 15, 30)
+        self.leveltext = Text(self.surface, "Level: " + str(self.level), 20, WHITE, backgroundcolor, NCOLS * size + 15, 50)
+        
         self.draw()
         
-
     def draw(self):
         self.surface.fill(backgroundcolor, [0, 0, screen_size[0] - 110, screen_size[1]])
         for i in range(NROWS + 1):
@@ -44,7 +51,7 @@ class Board():
                 if self.board[i][j]:
                     self.board_show[i][j].draw(i, j)
                     
-        self.board_show = self.block.draw(self.block.color, self.block.color2)
+        self.board_show = self.block.draw()
         self.texts()
         pygame.display.update()
             
@@ -56,7 +63,7 @@ class Board():
         return temp
      
     def actualize(self, rows=set()):
-        self.point += len(rows)**2 * 10 
+        self.point += len(rows) ** 2 * 10 
         self.count += len(rows)
         if self.count // 10 + 1 - self.level:
             self.time *= 0.9
@@ -66,6 +73,7 @@ class Board():
             for j in range(NCOLS):
                 self.board[j][i] = 0
         pygame.display.update()
+        
         for i in reversed(range(NROWS)):
             if sum(self.board[k][i] for k in range(NCOLS)) == 0:
                 for j in reversed(range(0, i)):
@@ -75,11 +83,16 @@ class Board():
                         break
         if rows:
             pygame.time.wait(100)
+        
         if self.block.checkIfLays():
             for i in self.block.fields:
-                self.board[i[0]][i[1]] = 1
-                self.board_show[i[0]][i[1]].color = self.block.color
-            self.block = LongBlock(self.board, self.board_show)
+                if i[0] >= 0 and i[1] >= 0:
+                    self.board[i[0]][i[1]] = 1
+                    self.board_show[i[0]][i[1]].color = self.block.color
+                    self.board_show[i[0]][i[1]].color1 = self.block.color1
+            if not self.isGameOver():
+                self.block.set(self.block_next)
+                self.block_next = random.choice(Blocks)
             
     def isGameOver(self):
         for i in range(NCOLS):
@@ -93,12 +106,9 @@ class Board():
         return board
     
     def texts(self):
-        font = pygame.font.Font(None,20)
-        scoretext = font.render("Score: " + str(self.point), 1, (255,255,255), backgroundcolor)
-        leveltext = font.render("Level: " + str(self.level), 1, (255,255,255), backgroundcolor)
-        gametext = font.render("Tetris", 1, (255,255,255), backgroundcolor)
-        self.surface.blit(gametext, (NCOLS * size + 15, 10))
-        self.surface.blit(scoretext, (NCOLS * size + 15, 30))
-        self.surface.blit(leveltext, (NCOLS * size + 15, 50))
-        
+        self.starttext.show()
+        self.leveltext.changeText("Level: " + str(self.level))
+        self.leveltext.show()
+        self.scoretext.changeText("Score: " + str(self.point))
+        self.scoretext.show()
         
