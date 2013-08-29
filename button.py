@@ -9,12 +9,16 @@ from text import Text
 import pygame
 
 class Button():
-    def __init__(self, surface, text, x, y, fontSize):
+    def __init__(self, surface, text, x, y, fontSize, center = False):
+        self.surface = surface
         self.x = x
         self.y = y
-        self.surface = surface
-        self.text = Text(self.surface, text, fontSize, WHITE, backgroundcolor, self.x, self.y) 
+        self.text = Text(self.surface, text, False, fontSize, WHITE, backgroundcolor, self.x, self.y) 
         self.width, self.height = self.text.dimensions()
+        if center:
+            self.x -= self.width // 2
+            self.y -= self.height // 2
+            self.text.setXY(self.x, self.y)
         self.hover = 0
     
     def draw(self):

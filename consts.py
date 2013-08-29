@@ -34,12 +34,18 @@ AND_LAST_ONE = (255, 204, 51)
 backgroundcolor = FAIR_BLUE
 roundbuttoncolor = ORANGE
 
-LongBlock = ([[NCOLS / 2, -3], [NCOLS / 2, -2], [NCOLS / 2, -1], [NCOLS / 2, 0]], FAIR_GREEN, GREEN)
-SquareBlock = ([[NCOLS / 2 + 1, -1], [NCOLS / 2, -1], [NCOLS / 2 + 1, 0], [NCOLS / 2, 0]], PINK, RED) 
-LBlock = ([[NCOLS / 2, -2], [NCOLS / 2, -1], [NCOLS / 2, 0], [NCOLS / 2 + 1, 0]], YELLOW, ORANGE)  
-revLBlock = ([[NCOLS / 2 + 1, -2], [NCOLS / 2 + 1, -1], [NCOLS / 2 + 1, 0], [NCOLS / 2, 0]], PURPLE, DARK_PURPLE)  
-ZBlock = ([[NCOLS / 2 - 1, -1], [NCOLS / 2, -1], [NCOLS / 2, 0], [NCOLS / 2 + 1, 0]], BROWN, SOME_YELLOW)  
-revZBlock = ([[NCOLS / 2 - 1, 0], [NCOLS / 2, 0], [NCOLS / 2, -1], [NCOLS / 2 + 1, -1]], ELSE_BLUE, DARK_BLUE)
-SBlock = ([[NCOLS / 2 - 1, 0], [NCOLS / 2, 0], [NCOLS / 2 + 1, 0], [NCOLS / 2, -1]], SOME_ELSE_YELLOW, AND_LAST_ONE)
+LongBlock = ([[NCOLS // 2, -3], [NCOLS // 2, -2], [NCOLS // 2, -1], [NCOLS // 2, 0]], FAIR_GREEN, GREEN)
+SquareBlock = ([[NCOLS // 2, -1], [NCOLS // 2 - 1, -1], [NCOLS // 2 - 1, 0], [NCOLS // 2, 0]], PINK, RED) 
+LBlock = ([[NCOLS // 2 - 1, -2], [NCOLS // 2 - 1, -1], [NCOLS // 2 - 1, 0], [NCOLS // 2, 0]], YELLOW, ORANGE)  
+revLBlock = ([[NCOLS // 2, -2], [NCOLS // 2, -1], [NCOLS // 2, 0], [NCOLS // 2 - 1, 0]], PURPLE, DARK_PURPLE)  
+ZBlock = ([[NCOLS // 2 - 1, -1], [NCOLS // 2, -1], [NCOLS // 2, 0], [NCOLS // 2 + 1, 0]], BROWN, SOME_YELLOW)  
+revZBlock = ([[NCOLS // 2 - 1, 0], [NCOLS // 2, 0], [NCOLS // 2, -1], [NCOLS // 2 + 1, -1]], ELSE_BLUE, DARK_BLUE)
+SBlock = ([[NCOLS // 2 - 1, 0], [NCOLS // 2, 0], [NCOLS // 2 + 1, 0], [NCOLS // 2, -1]], SOME_ELSE_YELLOW, AND_LAST_ONE)
 
 Blocks = [LongBlock, SquareBlock, LBlock, revLBlock, ZBlock, revZBlock, SBlock]
+
+sentence1 = "It could have been better..."
+sentence2 = "Nice try!"
+sentence3 = "I'm impressed! You're cool!"
+sentence4 = "Try your luck next time!"
+sentences = [sentence1, sentence2, sentence3, sentence4]

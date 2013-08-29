@@ -15,26 +15,13 @@ import pygame
 class Board():
     def __init__(self, surface):
         self.surface = surface
-        self.surface.fill(backgroundcolor)
+              
         self.point = 0
-        self.level = 1
-        self.count = 0
-        self.time = 1000
-        self.board_show = {i : [SingleBlock(self.surface, BLACK, WHITE) for j in range(NROWS)] for i in range(NCOLS)}
-        self.board = {i: [0 for j in range(NROWS + 1)] for i in range(-1, NCOLS + 1)}
-        self.board[-1] = [1 for j in range(NROWS + 1)]
-        self.board[NCOLS] = [1 for j in range(NROWS + 1)]
-        for i in range(-1, NCOLS + 1):
-            self.board[i][NROWS] = 1
-        self.block = Block(self.board, self.board_show, random.choice(Blocks))
-        self.block_next = random.choice(Blocks)
-               
-        self.starttext = Text(self.surface, "TETRIS", 20, WHITE, backgroundcolor, NCOLS * size + 15, 10)
-        self.scoretext = Text(self.surface, "Score: " + str(self.point), 20, WHITE, backgroundcolor, NCOLS * size + 15, 30)
-        self.leveltext = Text(self.surface, "Level: " + str(self.level), 20, WHITE, backgroundcolor, NCOLS * size + 15, 50)
-        
-        self.draw()
-        
+        self.level = 1 
+        self.starttext = Text(self.surface, "TETRIS", False, 20, WHITE, backgroundcolor, NCOLS * size + 15, 10)
+        self.scoretext = Text(self.surface, "Score: " + str(self.point), False, 20, WHITE, backgroundcolor, NCOLS * size + 15, 30)
+        self.leveltext = Text(self.surface, "Level: " + str(self.level), False, 20, WHITE, backgroundcolor, NCOLS * size + 15, 50)
+       
     def draw(self):
         self.surface.fill(backgroundcolor, [0, 0, screen_size[0] - 110, screen_size[1]])
         for i in range(NROWS + 1):
@@ -83,7 +70,10 @@ class Board():
                         break
         if rows:
             pygame.time.wait(100)
+            
+        self.checkBlock()
         
+    def checkBlock(self):
         if self.block.checkIfLays():
             for i in self.block.fields:
                 if i[0] >= 0 and i[1] >= 0:
@@ -112,3 +102,18 @@ class Board():
         self.scoretext.changeText("Score: " + str(self.point))
         self.scoretext.show()
         
+    def reset(self):
+        self.surface.fill(backgroundcolor)
+        self.point = 0
+        self.level = 1
+        self.count = 0
+        self.time = 1000
+        self.board_show = {i : [SingleBlock(self.surface, BLACK, WHITE) for j in range(NROWS)] for i in range(NCOLS)}
+        self.board = {i: [0 for j in range(NROWS + 1)] for i in range(-1, NCOLS + 1)}
+        self.board[-1] = [1 for j in range(NROWS + 1)]
+        self.board[NCOLS] = [1 for j in range(NROWS + 1)]
+        for i in range(-1, NCOLS + 1):
+            self.board[i][NROWS] = 1
+        self.block = Block(self.board, self.board_show, random.choice(Blocks))
+        self.block_next = random.choice(Blocks)
+        self.draw()

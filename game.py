@@ -21,7 +21,7 @@ class Game():
         self.board = Board(self.surface)
         self.quit = Button(self.surface, "QUIT", screen_size[0] - 60, screen_size[1] - 30, 25)
         self.pause = Button(self.surface, "PAUSE", screen_size[0] - 76, screen_size[1] - 65, 25)
-        self.gameOverText = Text(self.surface, "GAME OVER", 70, WHITE, backgroundcolor, NCOLS/5 * size, NROWS/3 * size)
+        self.gameOverText = Text(self.surface, "GAME OVER", True, 70, WHITE, backgroundcolor, screen_size[0] // 2, screen_size[1] * 3/8)
         if self.gamestate:
             while self.loop():
                 pass
@@ -32,29 +32,29 @@ class Game():
         pygame.quit()
                  
     def loop(self):
-        self.time = 1000
+        self.board.reset()
         self.pause.draw()
         self.quit.draw()
         self.acttime = 0
         self.hideMouse()
+        
         while self.gamestate:
-            
-
             if self.readEvents() == 1:
                 self.readKeys()
                 
-                self.board.draw()
-                if -(self.acttime - pygame.time.get_ticks()) > self.time:
+                if -(self.acttime - pygame.time.get_ticks()) > self.board.time:
                     self.board.block.moveDown()
                     self.acttime = pygame.time.get_ticks()
+                    
                 self.board.actualize(self.board.check())
+                self.board.draw()
                 
                 if self.board.isGameOver():
                     self.gameOverText.show()
                     pygame.display.update()
                     pygame.time.wait(1000)
-                    return self.overScreen.loop()
-                 
+                    self.overScreen.show(self.board.point)
+                    return self.overScreen.loop()       
         return 0
         
     def hideMouse(self):
@@ -103,4 +103,3 @@ class Game():
                           
 if __name__ == '__main__':
     Game()
-

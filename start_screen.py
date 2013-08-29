@@ -12,10 +12,10 @@ import pygame
 class StartScreen():
     def __init__(self, surface):
         self.surface = surface
-        self.position = (screen_size[0]//2 - 70, screen_size[1] - 0.8 * NROWS * size)
-        self.start = Button(self.surface, "START", self.position[0] + 30, self.position[1] + 100, 30)
-        self.quit = Button(self.surface, "QUIT", self.position[0] + 38, self.position[1] + 140, 30)
-        self.starttext = Text(self.surface, "TETRIS", 50, WHITE, backgroundcolor, self.position[0], self.position[1])
+        self.position = (screen_size[0] // 2 - 70, screen_size[1] - 0.8 * NROWS * size)
+        self.start = Button(self.surface, "START", screen_size[0] // 2, screen_size[1] * 6/8, 30, True)
+        self.quit = Button(self.surface, "QUIT", screen_size[0] // 2, screen_size[1] * 7/8, 30, True)
+        self.starttext = Text(self.surface, "TETRIS", True, 50, WHITE, backgroundcolor, screen_size[0] // 2, screen_size[1] * 2/8)
         self.show()
         
     def show(self):
@@ -26,6 +26,7 @@ class StartScreen():
         pygame.display.update()
         
     def loop(self):
+        pygame.mouse.set_visible(True)
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -48,5 +49,3 @@ class StartScreen():
                     else:
                         self.quit.hover = 0
                     self.quit.drawBorder()
-                                                
-    
