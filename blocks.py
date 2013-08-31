@@ -7,7 +7,7 @@ Created on 27 sie 2013
 from consts import size, margin, NCOLS, NROWS, SquareBlock
 import pygame
 
-class SingleBlock():
+class SingleBlock():  #single block, only to draw
     def __init__(self, surface, color, color1):
         self.surface = surface
         self.color = color

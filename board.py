@@ -70,8 +70,6 @@ class Board():
                         break
         if rows:
             pygame.time.wait(100)
-            
-        self.checkBlock()
         
     def checkBlock(self):
         if self.block.checkIfLays():
