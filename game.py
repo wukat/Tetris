@@ -24,9 +24,9 @@ class Game():
         self.pause = Button(self.surface, "PAUSE", screen_size[0] - 76, screen_size[1] - 65, 25)
         self.gameOverText = Text(self.surface, "GAME OVER", True, 70, WHITE, backgroundcolor, screen_size[0] // 2, screen_size[1] * 3 / 8)
         
-          
-        while self.loop():  # loop returns 1 - play again, 0 - quit
-            pass
+        if self.gamestate == 1:  
+            while self.loop():  # loop returns 1 - play again, 0 - quit
+                pass
         self.game_exit()
 
     def game_exit(self):
