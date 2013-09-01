@@ -37,16 +37,22 @@ class Game():
         self.pause.draw()
         self.quit.draw()
         self.acttime = 0
+        self.checktime = 0
         self.hideMouse()
-        pygame.key.set_repeat(100, 100)
+        pygame.key.set_repeat(100, 50)
         
         while self.gamestate:  # main loop
             if not self.readEvents():
                 temp = pygame.time.get_ticks()  # get time
                 if -(self.acttime - temp) > self.board.time:  # time
                     self.board.block.moveDown()
+                    self.checktime = temp + 50
                     self.acttime = temp
+                    
+                if -(self.checktime - temp) > 100:  # time
+                    self.checktime = temp
                     self.board.checkBlock()  # check if blocks lays
+
                 self.board.draw()
                 
                 if self.board.isGameOver():  # when the game is over gameoverscreen runs
@@ -98,8 +104,9 @@ class Game():
                 self.pause.drawBorder()
                 self.quit.drawBorder()
                 self.hideMouse()
-                flag = 1
         self.board.actualize(self.board.check())  # actualization of the game (check if any rows are full)
+        if flag:
+            self.checktime += 150
         return flag
                           
 if __name__ == '__main__':
