@@ -106,7 +106,7 @@ class Game():
                 self.hideMouse()
         self.board.actualize(self.board.check())  # actualization of the game (check if any rows are full)
         if flag:
-            self.checktime += 150
+            self.checktime = pygame.time.get_ticks() + 50
         return flag
                           
 if __name__ == '__main__':
