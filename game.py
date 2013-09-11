@@ -39,17 +39,17 @@ class Game():
         self.acttime = 0
         self.checktime = 0
         self.hideMouse()
-        pygame.key.set_repeat(100, 50)
+        pygame.key.set_repeat(80, 80)
         
         while self.gamestate:  # main loop
             if not self.readEvents():
                 temp = pygame.time.get_ticks()  # get time
                 if -(self.acttime - temp) > self.board.time:  # time
                     self.board.block.moveDown()
-                    self.checktime = temp + 50
+                    self.checktime = temp + 100
                     self.acttime = temp
                     
-                if -(self.checktime - temp) > 100:  # time
+                if -(self.checktime - temp) > 150:  # time
                     self.checktime = temp
                     self.board.checkBlock()  # check if blocks lays
 
@@ -106,7 +106,7 @@ class Game():
                 self.hideMouse()
         self.board.actualize(self.board.check())  # actualization of the game (check if any rows are full)
         if flag:
-            self.checktime = pygame.time.get_ticks() + 50
+            self.checktime += 150
         return flag
                           
 if __name__ == '__main__':
