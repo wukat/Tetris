@@ -42,7 +42,7 @@ class Game():
         pygame.key.set_repeat(80, 80)
         
         while self.gamestate:  # main loop
-            if not self.readEvents():
+            if not self.readEvents() and self.gamestate == 1:
                 temp = pygame.time.get_ticks()  # get time
                 if -(self.acttime - temp) > self.board.time:  # time
                     self.board.block.moveDown()
@@ -79,16 +79,16 @@ class Game():
             elif (event.type == KEYDOWN and event.key == K_SPACE) or (event.type == MOUSEBUTTONDOWN and self.pause.checkIfHover(pygame.mouse.get_pos())):
                 self.gamestate *= -1
                 flag = 1
-            elif (event.type == KEYDOWN and (event.key == K_w or event.key == K_UP)):
+            elif (event.type == KEYDOWN and (event.key == K_w or event.key == K_UP)) and self.gamestate == 1:
                 self.board.block.rotate()
                 flag = 1
-            elif (event.type == KEYDOWN and (event.key == K_s or event.key == K_DOWN)):
+            elif (event.type == KEYDOWN and (event.key == K_s or event.key == K_DOWN)) and self.gamestate == 1:
                 self.board.block.moveDown()
                 flag = 1
-            elif (event.type == KEYDOWN and (event.key == K_d or event.key == K_RIGHT)):
+            elif (event.type == KEYDOWN and (event.key == K_d or event.key == K_RIGHT)) and self.gamestate == 1:
                 self.board.block.move(1, 0)
                 flag = 1
-            elif (event.type == KEYDOWN and (event.key == K_a or event.key == K_LEFT)):
+            elif (event.type == KEYDOWN and (event.key == K_a or event.key == K_LEFT)) and self.gamestate == 1:
                 self.board.block.move(-1, 0)
                 flag = 1
             elif event.type == MOUSEMOTION:  # check if buttons are howered
